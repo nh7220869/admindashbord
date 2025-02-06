@@ -45,7 +45,7 @@ export default function FakeAdminDashboard() {
       Pending: 3,
       Cancelled: 4,
     } as const;
-    
+
     updatedOrders.sort(
       (a, b) =>
         (statusOrder[a.status as keyof typeof statusOrder] || 5) -
@@ -85,49 +85,52 @@ export default function FakeAdminDashboard() {
 
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
         <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
+        <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-700 text-white border-collapse">
-          <thead>
-            <tr>
-              <th className="py-3 px-6 text-left">Order ID</th>
-              <th className="py-3 px-6 text-left">Products</th>
-              <th className="py-3 px-6 text-left">Price</th>
-              <th className="py-3 px-6 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.length > 0 ? (
-              orders.map((order) => (
-                <tr key={order.id} className="border-t border-gray-600">
-                  <td className="py-3 px-6">{order.orderId}</td>
-                  <td className="py-3 px-6">{order.product}</td>
-                  <td className="py-3 px-6 text-yellow-400 font-bold">{order.price}</td>
-                  <td
-                    className={`py-3 px-6 font-semibold ${
-                      order.status === "Delivered"
-                        ? "text-green-400"
-                        : order.status === "Shipped"
-                        ? "text-blue-400"
-                        : order.status === "Pending"
-                        ? "text-yellow-400"
-                        : "text-red-400"
-                    }`}
-                  >
-                    {order.status}
-                  </td>
-                </tr>
-              ))
-            ) : (
+            <thead>
               <tr>
-                <td colSpan={4} className="text-center py-3 px-6">Loading...</td>
+                <th className="py-3 px-6 text-left">Order ID</th>
+                <th className="py-3 px-6 text-left">Products</th>
+                <th className="py-3 px-6 text-left">Price</th>
+                <th className="py-3 px-6 text-left">Status</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <tr key={order.id} className="border-t border-gray-600">
+                    <td className="py-3 px-6">{order.orderId}</td>
+                    <td className="py-3 px-6">{order.product}</td>
+                    <td className="py-3 px-6 text-yellow-400 font-bold">{order.price}</td>
+                    <td
+                      className={`py-3 px-6 font-semibold ${
+                        order.status === "Delivered"
+                          ? "text-green-400"
+                          : order.status === "Shipped"
+                          ? "text-blue-400"
+                          : order.status === "Pending"
+                          ? "text-yellow-400"
+                          : "text-red-400"
+                      }`}
+                    >
+                      {order.status}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="text-center py-3 px-6">Loading...</td>
+                </tr>
+              )}
+            </tbody>
+          </table></div>
       </div>
 
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold mb-4 text-white">Order Status Overview</h2>
-        <Bar data={chartData} />
+        <div className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[50%] mx-auto">
+          <Bar data={chartData} />
+        </div>
       </div>
     </div>
   );
