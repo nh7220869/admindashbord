@@ -1,4 +1,3 @@
-// pages/index.tsx
 "use client";
 
 import { Line } from 'react-chartjs-2';
@@ -52,17 +51,17 @@ const Home = () => {
       <h1 className="text-4xl font-bold text-center text-black mb-12">Sales Data Overview</h1>
 
       {/* Graph Container */}
-      <div className="flex flex-row gap-8 overflow-hidden">
+      <div className="flex flex-col sm:flex-row gap-8 overflow-hidden">
         {/* Monthly Sales Graph */}
-        <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200 flex-1 max-w-full h-[400px] overflow-hidden">
+        <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200 flex-1 max-w-full h-[400px] sm:h-[350px]">
           <h2 className="text-2xl font-semibold text-gray-700 mb-6">Monthly Sales in 2025</h2>
-          <Line data={monthlyData} options={options} height={400} width={600} />
+          <Line data={monthlyData} options={options} height={350} width={600} />
         </div>
 
         {/* Yearly Sales Graph */}
-        <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200 flex-1 max-w-full h-[400px] overflow-hidden">
+        <div className="p-6 bg-white rounded-lg shadow-md border border-gray-200 flex-1 max-w-full h-[400px] sm:h-[350px]">
           <h2 className="text-2xl font-semibold text-gray-700 mb-6">Yearly Sales</h2>
-          <Line data={yearlyData} options={options} height={400} width={600} />
+          <Line data={yearlyData} options={options} height={350} width={600} />
         </div>
       </div>
     </div>
