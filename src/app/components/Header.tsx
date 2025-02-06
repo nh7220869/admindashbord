@@ -1,11 +1,14 @@
 'use client';
 
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs'; // Import necessary Clerk components
-import { SignOutButton } from '@clerk/nextjs'; // Import SignOutButton
+import { useState } from 'react';
+import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
+import { SignOutButton } from '@clerk/nextjs';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 
 export default function AdminHeader() {
-  const { user } = useUser(); // Use Clerk's useUser hook to get the logged-in user
+  const { user } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="bg-gray-900 text-white py-4 px-6 flex justify-between items-center shadow-lg">
@@ -14,27 +17,37 @@ export default function AdminHeader() {
         <h1 className="text-3xl font-extrabold text-yellow-400">Admin Dashboard</h1>
       </div>
 
+      {/* Mobile Toggle Button */}
+      <button
+        className="lg:hidden text-white"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
       {/* Navigation */}
-      <div className="flex items-center space-x-8">
-        {/* Admin Navigation */}
-        <nav className="space-x-6">
+      <div
+        className={`${
+          isOpen ? 'block' : 'hidden'
+        } lg:flex lg:items-center lg:space-x-8 absolute lg:static top-16 left-0 w-full lg:w-auto bg-gray-900 lg:bg-transparent p-4 lg:p-0 z-10`}
+      >
+        <nav className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
           <Link href="/" className="text-lg hover:text-yellow-400 transition-all">
             Products
           </Link>
           <Link href="/form" className="text-lg hover:text-yellow-400 transition-all">
-            Add  Product
+            Add Product
           </Link>
           <Link href="/orders" className="text-lg hover:text-yellow-400 transition-all">
-          Orders
+            Orders
           </Link>
           <Link href="/Sales" className="text-lg hover:text-yellow-400 transition-all">
-          Sales
+            Sales
           </Link>
         </nav>
 
         {/* User Info and Sign Out */}
-        <div className="flex items-center space-x-4">
-          {/* Show SignInButton if the user is not signed in */}
+        <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4 mt-4 lg:mt-0">
           <SignedOut>
             <SignInButton>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
@@ -43,30 +56,21 @@ export default function AdminHeader() {
             </SignInButton>
           </SignedOut>
 
-          {/* Show UserInfo when signed in */}
           <SignedIn>
             <div className="flex items-center space-x-4">
-              {/* User Info and Avatar */}
               {user && (
                 <div className="flex items-center space-x-2">
-                  <span className="text-lg font-semibold text-white">{user.firstName} {user.lastName}</span>
+                  <span className="text-lg font-semibold text-white">
+                    {user.firstName} {user.lastName}
+                  </span>
                   <UserButton />
                 </div>
               )}
-
-              {/* Dropdown Menu for User Options */}
-              <div className="relative">
-              
-                <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg hidden group-hover:block">
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-200">Profile</Link>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-200">Settings</Link>
-                  <SignOutButton>
-                    <button className="block w-full text-left px-4 py-2 bg-red-600 text-white rounded-b-lg hover:bg-red-700 transition-all">
-                      Sign Out
-                    </button>
-                  </SignOutButton>
-                </div>
-              </div>
+              <SignOutButton>
+                <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">
+                  Sign Out
+                </button>
+              </SignOutButton>
             </div>
           </SignedIn>
         </div>
