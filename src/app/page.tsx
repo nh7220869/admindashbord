@@ -47,7 +47,6 @@ export default function AdminProductPage() {
         const data = await res.json();
         setProducts(data);
       } catch (err: unknown) {
-        // Type error as 'unknown'
         if (err instanceof Error) {
           setError(err.message);
         } else {
@@ -96,11 +95,10 @@ export default function AdminProductPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
   
     try {
       if (editingProductId) {
-        // Update existing product
         await fetch(`https://677ff2a50476123f76a8dd73.mockapi.io/product/${editingProductId}`, {
           method: "PUT",
           headers: {
@@ -110,7 +108,6 @@ export default function AdminProductPage() {
         });
         alert("Product updated!");
       } else {
-        // Add new product
         await fetch("https://677ff2a50476123f76a8dd73.mockapi.io/product", {
           method: "POST",
           headers: {
@@ -121,7 +118,6 @@ export default function AdminProductPage() {
         alert("Product added!");
       }
   
-      // Reset form and update product list
       setProductData({
         img: "",
         title: "",
@@ -134,7 +130,6 @@ export default function AdminProductPage() {
       });
       setEditingProductId(null);
   
-      // Fetch updated product list without reloading the page
       const res = await fetch("https://677ff2a50476123f76a8dd73.mockapi.io/product");
       const data = await res.json();
       setProducts(data);
@@ -155,9 +150,8 @@ export default function AdminProductPage() {
         {editingProductId ? "Edit Product" : "Add Product"}
       </h1>
 
-      {/* Show the form for adding or editing the product */}
       {editingProductId !== null && (
-        <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <form onSubmit={handleSubmit} className="space-y-4 mb-6 max-w-4xl mx-auto">
           <div>
             <label htmlFor="title" className="block text-sm">Title</label>
             <input
@@ -248,59 +242,60 @@ export default function AdminProductPage() {
         </form>
       )}
 
-      {/* Product List */}
       <h2 className="text-xl font-semibold mb-4">Product List</h2>
-      <table className="min-w-full bg-gray-800 text-white border-collapse">
-        <thead>
-          <tr>
-            <th className="py-3 px-6 text-left">Image</th>
-            <th className="py-3 px-6 text-left">Title</th>
-            <th className="py-3 px-6 text-left">Description</th>
-            <th className="py-3 px-6 text-left">Price</th>
-            <th className="py-3 px-6 text-left">Colors</th>
-            <th className="py-3 px-6 text-left">Category & Type</th>
-            <th className="py-3 px-6 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className="border-t border-gray-700">
-              <td className="py-3 px-6">
-                <img
-                  src={product.img}
-                  alt={product.title}
-                  className="w-16 h-16 object-cover rounded-md"
-                />
-              </td>
-              <td className="py-3 px-6">{product.title}</td>
-              <td className="py-3 px-6 text-sm">{product.description.slice(0, 80)}...</td>
-              <td className="py-3 px-6 text-yellow-400 font-bold">{product.price}</td>
-              <td className="py-3 px-6">
-                {product.color.map((clr, index) => (
-                  <span key={index} className="text-white ml-1">{clr}</span>
-                ))}
-              </td>
-              <td className="py-3 px-6 text-sm text-gray-400">
-                {product.producttype} | {product.type}
-              </td>
-              <td className="py-3 px-6 flex space-x-2">
-                <button
-                  onClick={() => handleEdit(product)}
-                  className="bg-blue-600 text-white p-2 rounded-md"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(product.id!)}
-                  className="bg-red-600 text-white p-2 rounded-md"
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-gray-800 text-white border-collapse">
+          <thead>
+            <tr>
+              <th className="py-3 px-6 text-left">Image</th>
+              <th className="py-3 px-6 text-left">Title</th>
+              <th className="py-3 px-6 text-left">Description</th>
+              <th className="py-3 px-6 text-left">Price</th>
+              <th className="py-3 px-6 text-left">Colors</th>
+              <th className="py-3 px-6 text-left">Category & Type</th>
+              <th className="py-3 px-6 text-left">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id} className="border-t border-gray-700">
+                <td className="py-3 px-6">
+                  <img
+                    src={product.img}
+                    alt={product.title}
+                    className="w-16 h-16 object-cover rounded-md"
+                  />
+                </td>
+                <td className="py-3 px-6">{product.title}</td>
+                <td className="py-3 px-6 text-sm">{product.description.slice(0, 80)}...</td>
+                <td className="py-3 px-6 text-yellow-400 font-bold">{product.price}</td>
+                <td className="py-3 px-6">
+                  {product.color.map((clr, index) => (
+                    <span key={index} className="text-white ml-1">{clr}</span>
+                  ))}
+                </td>
+                <td className="py-3 px-6 text-sm text-gray-400">
+                  {product.producttype} | {product.type}
+                </td>
+                <td className="py-3 px-6 flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(product)}
+                    className="bg-blue-600 text-white p-2 rounded-md"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product.id!)}
+                    className="bg-red-600 text-white p-2 rounded-md"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
